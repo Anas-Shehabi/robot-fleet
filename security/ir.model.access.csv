@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_robot,access_robot,model_robot,,1,1,1,1
+access_station,access_station,model_station,,1,1,1,1
+access_task,access_tsk,model_robot_fleet_task,,1,1,1,1
+access_task_owners,access_task_owners,model_task_owner,,1,1,1,1
+access_task_tags,access_task_tags,model_task_tag,,1,1,1,1
+access_robot_tags,access_robot_tags,model_robot_tag,,1,1,1,1

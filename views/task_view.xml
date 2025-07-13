@@ -1,0 +1,185 @@
+<odoo>
+
+        <record id="view_task_form" model="ir.ui.view">
+            <field name="name">task_form</field>
+            <field name="model">robot_fleet.task</field>
+            <field name="arch" type="xml">
+                <form string="Robot Task">
+                    <sheet>
+                         <header>
+                            <button name="action_new" type="object" class="btn-primary" string="Set to New" invisible="status == 'new'" />
+                            <button name="action_in_progres" type="object" class="btn-warning" string="In Progress" invisible="status != 'new'"/>
+                            <button name="action_done" type="object" class="btn-success" string="Done" invisible="status != 'in_progress'"/>
+                            <field name="status" widget="statusbar"  /> <!--options = "{'clickable':1 }" -->
+                         </header>
+                         <div class="oe_title">
+                             <label for="ref"/>
+                             <h1>
+                                 <field name="ref"/>
+                             </h1>
+                         </div>
+                         <group >
+                            <group string="General info.">
+                                <field name="name"/>
+                                <field name="task_begins"/>
+                                <field name="task_ends" invisible="1" optional="hide"/>
+                                <field name="description"/>
+                                <field name="source_station_id"/>
+                                <field name="destination_station_id"/>
+                            </group>
+
+                            <group string="Additional Info." >
+                                <field name="robot_ids" widget="many2many_tags" options="{'no_create': True}"/>
+                                <field name="task_owner_id"/>
+                                <field name="tags_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                                <field name="task_ends" visibility="task_ends != False" optional="hide" readonly="1"/>
+
+
+                            </group>
+                         </group>
+
+                    </sheet>
+                    <!-- chatter-->
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_task_tree" model="ir.ui.view">
+            <field name="name">task_tree</field>
+            <field name="model">robot_fleet.task</field>
+            <field name="arch" type="xml">
+                <tree string="Robot Tasks">
+                    <field name="name"/>
+                    <field name="ref" class="fw-bold"/>
+                    <field name="description"/>
+                    <field name="robot_ids" widget="many2many_tags" options="{'no_create': True}"/>
+                    <field name="status"/>
+                    <field name="tags_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                    <field name="task_ends"  optional="hide"/>
+                    <field name="active" invisible="1" optional="hide"/>
+                </tree>
+            </field>
+        </record>
+        <record id="view_task_kanban" model="ir.ui.view">
+            <field name="name">robot_fleet.task.kanban</field>
+            <field name="model">robot_fleet.task</field>
+            <field name="arch" type="xml">
+                <kanban class="o_kanban_view" default_group_by="status">
+                    <field name="status"/>
+                    <field name="name"/>
+                    <field name="ref"/>
+                    <field name="description"/>
+                    <field name="robot_ids"/>
+                    <field name="tags_ids"/>
+
+                    <templates>
+                        <t t-name="kanban-box">
+                            <!-- Define CSS classes first -->
+                            <t t-set="status_class" t-value="
+                                record.status.raw_value == 'new' ? 'status-new' :
+                                record.status.raw_value == 'in_progress' ? 'status-in-progress' :
+                                'status-done'
+                            "/>
+
+                            <div t-attf-class="oe_kanban_card oe_kanban_global_click #{status_class}"
+                                    style="background-color: #b0c4de !important;">
+                                <!-- Header -->
+                                <div class="kanban-header">
+                                    <strong><field name="ref"/></strong>
+                                    <span t-attf-class="status-badge #{status_class}" >
+                                        <field name="status"/>
+                                    </span>
+                                </div>
+
+                                <!-- Content -->
+                                <div class="kanban-content">
+                                    <span>Task Name :</span>
+                                    <field name="name"/>
+                                </div>
+
+                                <!-- Tags -->
+                                <div class="kanban-tags">
+                                    <span>Assigned Robot :</span><field name="robot_ids" widget="many2many_tags"/>
+                                </div>
+                                <div class="kanban-tags">
+                                    <span>Tags :</span><field name="tags_ids" widget="many2many_tags" options="{'color_field':'color'}"/>
+                                </div>
+
+                                <!-- Description -->
+                                <t t-if="record.description.raw_value">
+                                    <div class="kanban-description">
+                                        <field name="description"/>
+                                    </div>
+                                </t>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+<!--        <record id="view_task_kanban" model="ir.ui.view">-->
+<!--            <field name="name">robot_fleet.task.kanban</field>-->
+<!--            <field name="model">robot_fleet.task</field>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <kanban class="o_kanban_view" default_group_by="status">-->
+<!--                    &lt;!&ndash; Fields needed for display &ndash;&gt;-->
+<!--                    <field name="status"/>-->
+<!--                    <field name="name"/>-->
+<!--                    <field name="ref"/>-->
+<!--                    <field name="description"/>-->
+
+<!--                    <templates>-->
+<!--                        <t t-name="kanban-box">-->
+<!--                            &lt;!&ndash; Simple card with status-based left border &ndash;&gt;-->
+<!--                            <div class="oe_kanban_card"-->
+<!--                                 t-attf-style="border-left: 4px solid {-->
+<!--                                     'new': '#3498db',-->
+<!--                                     'in_progress': '#f39c12',-->
+<!--                                     'done': '#27ae60'-->
+<!--                                 }.get(record.status.raw_value, '#cccccc'); padding: 12px;">-->
+
+<!--                                <div>-->
+<!--                                    <strong><field name="ref"/></strong>-->
+<!--                                    <div><field name="name"/></div>-->
+<!--                                     <div class="kanban_tags">-->
+<!--                                        <field name="robot_ids" widget="many2many_tags"/>-->
+<!--                                    </div>-->
+<!--                                    <div class="kanban_tags">-->
+<!--                                        <field name="tags_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>-->
+<!--                                    </div>-->
+
+<!--                                    <t t-if="record.description.raw_value">-->
+<!--                                        <div style="margin-top: 8px; color: #666;">-->
+<!--                                            <field name="description"/>-->
+<!--                                        </div>-->
+<!--                                    </t>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </t>-->
+<!--                    </templates>-->
+<!--                </kanban>-->
+<!--            </field>-->
+<!--        </record>-->
+
+
+
+        <record id="action_robot_task" model="ir.actions.act_window">
+            <field name="name">Tasks</field>
+            <field name="res_model">robot_fleet.task</field>
+            <field name="view_mode">kanban,tree,form</field>
+        </record>
+
+        <menuitem
+            id="task_menu_item"
+            name="Tasks"
+            parent="menu_task"
+            action="action_robot_task"
+            />
+
+</odoo>

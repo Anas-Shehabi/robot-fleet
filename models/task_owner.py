@@ -11,3 +11,10 @@ class TaskOwner (models.Model):
     phone = fields.Char()
     address = fields.Char()
     task_ids = fields.One2many('robot_fleet.task','task_owner_id')
+    company_id = fields.Many2one(
+        'res.company',
+        string='Company',
+        default=lambda self: self.env.company,
+        required=True,
+        help="Company this Owner belongs to"
+    )

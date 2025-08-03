@@ -1,16 +1,14 @@
-id,name,robot_type,status_robot,capacity
-robot_1,Audi Robot AU001,agv,idle,30
-robot_2,Tesla Robot TS001,arm,maintenance,15
-robot_3,BMW Robot BW001,drone,idle,5
-robot_4,Toyota Robot TY001,agv,maintenance,20
-robot_5,Ford Robot FD001,arm,idle,12
-robot_6,Hyundai Robot HY001,drone,idle,7
-robot_7,Mercedes Robot MC001,humanoid,idle,18
-robot_8,Honda Robot HD001,arm,maintenance,10
-robot_9,Kia Robot KA001,agv,idle,22
-robot_10,Nissan Robot NS001,drone,idle,6
-robot_11,Chevy Robot CV001,agv,idle,24
-robot_12,Volvo Robot VV001,arm,maintenance,13
-robot_13,Lexus Robot LX001,humanoid,idle,20
-robot_14,Mazda Robot MZ001,drone,maintenance,8
-robot_15,Subaru Robot SB001,agv,idle,16
+id,name,robot_type,capacity,serial_number
+robot_1,StorageBot ST001,agv,30,ST001
+robot_2,StorageArm SA001,arm,15,SA001
+robot_3,LiftDrone LD001,drone,10,LD001
+robot_4,StorageMover SM001,agv,25,SM001
+robot_5,StackerArm SK001,arm,12,SK001
+robot_6,StorageFlyer SF001,drone,8,SF001
+robot_7,WarehouseHelper WH001,humanoid,20,WH001
+robot_8,MedicBot MD001,arm,10,MD001
+robot_9,HospitalDrone HD001,drone,7,HD001
+robot_10,AssistBot AS001,humanoid,18,AS001
+robot_11,SupplyMover SP001,agv,22,SP001
+robot_12,HealthArm HA001,arm,14,HA001
+

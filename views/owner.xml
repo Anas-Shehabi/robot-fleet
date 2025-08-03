@@ -31,6 +31,10 @@
                     <group>
                         <field name="phone"/>
                         <field name="address"/>
+                        <field name="company_id"
+                       groups="robot_fleet.group_manager"
+                       widget="res_company"
+                       options="{'no_create': True, 'no_open': True}"/>
                         <field name="active" invisible="1" optional="hide"/>
 
                     </group>

@@ -7,6 +7,9 @@ class Robot(models.Model):
     _description = 'Robot Fleet'
 
     name = fields.Char(string='Robot Name', required=True)
+    serial_number = fields.Char(string='Serial Number', required=True, copy=False, index=True)
+
+
     active = fields.Boolean(default=True)
     tags_ids = fields.Many2many('robot_tag')
 
@@ -23,6 +26,11 @@ class Robot(models.Model):
         ('maintenance', 'Maintenance')
     ], string='Status', default='idle')
 
+    company_id = fields.Many2one(
+        'res.company',
+        string='Company',
+        default=lambda self: self.env.company
+    )
     capacity = fields.Integer(string='Capacity (kg)')
 
     def _default_charging_station(self):
@@ -58,8 +66,9 @@ class Robot(models.Model):
     # History of all completed tasks for this robot
     completed_task_ids = fields.Many2many('robot_fleet.task', string='Completed Tasks')
 
-
-
+    _sql_constraints = [
+        ('unique_serial_number', 'unique(serial_number)', 'The Serial Number must be unique!')
+    ]
 
 
 
